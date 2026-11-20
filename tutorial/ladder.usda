@@ -1,0 +1,107 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def "World"
+{
+    def "ladder"
+    {
+        def Xform "rails"
+        {
+            def Cube "rail_00"
+            {
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                double size = 1
+                matrix4d xformOp:transform = ( (0.06, 0, 0, 0), (0, 3, 0, 0), (0, 0, 0.06, 0), (-0.25, 1.5, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+
+            def Cube "rail_01"
+            {
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                double size = 1
+                matrix4d xformOp:transform = ( (0.06, 0, 0, 0), (0, 3, 0, 0), (0, 0, 0.06, 0), (0.25, 1.5, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+        }
+
+        def Xform "rungs"
+        {
+            def Cube "rung_00"
+            {
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                double size = 1
+                matrix4d xformOp:transform = ( (0.5, 0, 0, 0), (0, 0.04, 0, 0), (0, 0, 0.05, 0), (0, 0.3, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+
+            def Cube "rung_01"
+            {
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                double size = 1
+                matrix4d xformOp:transform = ( (0.5, 0, 0, 0), (0, 0.04, 0, 0), (0, 0, 0.05, 0), (0, 0.6, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+
+            def Cube "rung_02"
+            {
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                double size = 1
+                matrix4d xformOp:transform = ( (0.5, 0, 0, 0), (0, 0.04, 0, 0), (0, 0, 0.05, 0), (0, 0.8999999999999999, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+
+            def Cube "rung_03"
+            {
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                double size = 1
+                matrix4d xformOp:transform = ( (0.5, 0, 0, 0), (0, 0.04, 0, 0), (0, 0, 0.05, 0), (0, 1.2, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+
+            def Cube "rung_04"
+            {
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                double size = 1
+                matrix4d xformOp:transform = ( (0.5, 0, 0, 0), (0, 0.04, 0, 0), (0, 0, 0.05, 0), (0, 1.5, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+
+            def Cube "rung_05"
+            {
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                double size = 1
+                matrix4d xformOp:transform = ( (0.5, 0, 0, 0), (0, 0.04, 0, 0), (0, 0, 0.05, 0), (0, 1.8, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+
+            def Cube "rung_06"
+            {
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                double size = 1
+                matrix4d xformOp:transform = ( (0.5, 0, 0, 0), (0, 0.04, 0, 0), (0, 0, 0.05, 0), (0, 2.1, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+
+            def Cube "rung_07"
+            {
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                double size = 1
+                matrix4d xformOp:transform = ( (0.5, 0, 0, 0), (0, 0.04, 0, 0), (0, 0, 0.05, 0), (0, 2.4, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+
+            def Cube "rung_08"
+            {
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                double size = 1
+                matrix4d xformOp:transform = ( (0.5, 0, 0, 0), (0, 0.04, 0, 0), (0, 0, 0.05, 0), (0, 2.6999999999999997, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+        }
+    }
+}
+

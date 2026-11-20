@@ -1,0 +1,79 @@
+#usda 1.0
+(
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Scope "chunks"
+{
+    def Chunk "ChunkGroup" (
+        prepend apiSchemas = ["NodeGraphNodeAPI"]
+    )
+    {
+        uniform token info:chunkType = "chunkgroup"
+        uniform token outputs:chunk
+        uniform float2 ui:nodegraph:node:pos = (0, 0)
+
+        def Chunk "Mesh" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            uniform token info:chunkType = "mesh"
+            uniform string info:moduleHash = "sha256:49962e92f4e90fa36fd45c24a43d1a2bea35510b633ccaf72e0ed7eecd14a600"
+            float inputs:cube:width = 2
+            bool inputs:grid:grid_checker = 0
+            string inputs:mesh_type = "cube"
+            string inputs:prim_path = "/geo/box"
+            uniform token outputs:chunk
+            uniform float2 ui:nodegraph:node:pos = (0, -3.75)
+        }
+
+        def Chunk "Transform" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            custom uniform string chunk:xformOpId = "Transform_1a31c5d6"
+            uniform token info:chunkType = "transform"
+            uniform string info:moduleHash = "sha256:f7565e58be1e987db76be7665a9eda00f4052c005e6a319375a55d7944b553da"
+            token inputs:chunk.connect = </chunks/ChunkGroup/Mesh.outputs:chunk>
+            string inputs:primpath_location = "@Mesh.prim_path@"
+            string inputs:primpath_location.connect = </chunks/ChunkGroup/Mesh.inputs:prim_path>
+            float inputs:translate_grp:ty = 3
+            uniform token outputs:chunk
+            rel ui:gizmo:transform:anchor = </geo/box>
+            uniform token ui:gizmo:transform:anchorSource = "primpath_location"
+            uniform token ui:gizmo:transform:driver.connect = [
+                </chunks/ChunkGroup/Transform.inputs:translate_grp:tx>,
+                </chunks/ChunkGroup/Transform.inputs:translate_grp:ty>,
+                </chunks/ChunkGroup/Transform.inputs:translate_grp:tz>,
+                </chunks/ChunkGroup/Transform.inputs:rotate_grp:rx>,
+                </chunks/ChunkGroup/Transform.inputs:rotate_grp:ry>,
+                </chunks/ChunkGroup/Transform.inputs:rotate_grp:rz>,
+                </chunks/ChunkGroup/Transform.inputs:scale_grp:sx>,
+                </chunks/ChunkGroup/Transform.inputs:scale_grp:sy>,
+                </chunks/ChunkGroup/Transform.inputs:scale_grp:sz>,
+            ]
+            uniform token[] ui:gizmo:transform:editmode = ["onPrimSelection"]
+            uniform token ui:gizmo:transform:label = "Transform"
+            uniform token ui:gizmo:transform:type = "transform"
+            uniform float2 ui:nodegraph:node:pos = (325, 0)
+        }
+
+        def Chunk "SetDisplayColor" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            uniform token info:chunkType = "set_display_color"
+            uniform string info:moduleHash = "sha256:ff06195f004fa03707d45bfd889928975513afb42b6dcfe5595ecfa904e14e3b"
+            token inputs:chunk.connect = </chunks/ChunkGroup/Transform.outputs:chunk>
+            float inputs:Color:color_b = 0.1
+            float inputs:Color:color_g = 0.2
+            float inputs:Color:color_r = 1
+            string inputs:prim_path = "@Mesh.prim_path@"
+            string inputs:prim_path.connect = </chunks/ChunkGroup/Mesh.inputs:prim_path>
+            uniform token outputs:chunk
+            uniform float2 ui:nodegraph:node:pos = (650, -57.5)
+        }
+    }
+}
+

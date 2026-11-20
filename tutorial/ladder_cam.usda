@@ -1,0 +1,33 @@
+#usda 1.0
+(
+    subLayers = [
+        @./ladder_preview.usda@
+    ]
+    upAxis = "Y"
+)
+
+def Camera "RenderCam"
+{
+    float2 clippingRange = (0.05, 147.2)
+    float focalLength = 35
+    matrix4d xformOp:transform = ( (0.9510565162951536, 1.387778780781446e-17, -0.3090169943749474, 0), (-0.07475797705169913, 0.9702957262759966, -0.23008139524453983, 0), (0.2998378689886651, 0.24192189559966773, 0.9228060732081251, -0), (4.413613497281114, 6.06109035629149, 13.583705600036584, 0.9999999999999999) )
+    uniform token[] xformOpOrder = ["xformOp:transform"]
+}
+
+def "RenderLights"
+{
+    def DistantLight "sun"
+    {
+        float inputs:angle = 1.5
+        float inputs:intensity = 900
+        float3 xformOp:rotateXYZ = (-50, 30, 0)
+        uniform token[] xformOpOrder = ["xformOp:rotateXYZ"]
+    }
+
+    def DomeLight "sky"
+    {
+        color3f inputs:color = (0.75, 0.85, 1)
+        float inputs:intensity = 140
+    }
+}
+

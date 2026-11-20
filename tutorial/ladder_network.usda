@@ -1,0 +1,254 @@
+#usda 1.0
+(
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Scope "chunks"
+{
+    def Chunk "ChunkGroup" (
+        prepend apiSchemas = ["NodeGraphNodeAPI"]
+    )
+    {
+        uniform token info:chunkType = "chunkgroup"
+        uniform token outputs:chunk
+        uniform float2 ui:nodegraph:node:pos = (0, 0)
+
+        def Chunk "Gap" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            uniform token info:chunkType = "vector_math_ops"
+            uniform string info:moduleHash = "sha256:7532ae8624c64f63fc349006fe1ec56ab0e898b82e984e0ab21c8ad9bc99ff5b"
+            float3 inputs:a = (1, 0, 0)
+            string inputs:operation = "Scale"
+            float inputs:scale (
+                customData = {
+                    dictionary chunk = {
+                        string expression = "@Rung.sx@"
+                    }
+                }
+            )
+            float inputs:scale.connect = </chunks/ChunkGroup/Rung.inputs:sx>
+            uniform token outputs:chunk
+            float3 outputs:result = (0.5, 0, 0)
+            uniform float2 ui:nodegraph:node:pos = (4570, -131)
+        }
+
+        def Chunk "Rise" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            uniform token info:chunkType = "vector_math_ops"
+            uniform string info:moduleHash = "sha256:7532ae8624c64f63fc349006fe1ec56ab0e898b82e984e0ab21c8ad9bc99ff5b"
+            float3 inputs:a = (0, 1, 0)
+            token inputs:chunk.connect = </chunks/ChunkGroup/Gap.outputs:chunk>
+            string inputs:operation = "Scale"
+            float inputs:scale (
+                customData = {
+                    dictionary chunk = {
+                        string expression = "@Rung.ty@"
+                    }
+                }
+            )
+            float inputs:scale.connect = </chunks/ChunkGroup/Rung.inputs:ty>
+            uniform token outputs:chunk
+            float3 outputs:result = (0, 0.3, 0)
+            uniform float2 ui:nodegraph:node:pos = (4895, -131)
+        }
+
+        def Chunk "RailBox" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            uniform token info:chunkType = "shape"
+            uniform string info:moduleHash = "sha256:36be9b308faebe2afa3f24770252dd9e8d21c6865336458999c448cf0c671295"
+            token inputs:chunk.connect = </chunks/ChunkGroup/Rise.outputs:chunk>
+            string inputs:prim_path = "/World/ladder/rail"
+            uniform token outputs:chunk
+            uniform float2 ui:nodegraph:node:pos = (2945, -0)
+        }
+
+        def Chunk "Rails" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            custom uniform string chunk:xformOpId = "Rails_23ef2816"
+            uniform token info:chunkType = "transform"
+            uniform string info:moduleHash = "sha256:f7565e58be1e987db76be7665a9eda00f4052c005e6a319375a55d7944b553da"
+            token inputs:chunk.connect = </chunks/ChunkGroup/RailBox.outputs:chunk>
+            string inputs:primpath_location = "/World/ladder/rail"
+            float inputs:scale_grp:sx = 0.06
+            float inputs:scale_grp:sy = 3
+            float inputs:scale_grp:sz = 0.06
+            float inputs:translate_grp:tx (
+                customData = {
+                    dictionary chunk = {
+                        string expression = "-@Rung.sx@ / 2"
+                    }
+                }
+            )
+            float inputs:translate_grp:tx.connect = </chunks/ChunkGroup/Rung.inputs:sx>
+            float inputs:translate_grp:ty (
+                customData = {
+                    dictionary chunk = {
+                        string expression = "@Rails.sy@ / 2"
+                    }
+                }
+            )
+            float inputs:translate_grp:ty.connect = </chunks/ChunkGroup/Rails.inputs:sy>
+            uniform token outputs:chunk
+            rel ui:gizmo:transform:anchor = </World/ladder/rail>
+            uniform token ui:gizmo:transform:anchorSource = "primpath_location"
+            uniform token ui:gizmo:transform:driver.connect = [
+                </chunks/ChunkGroup/Rails.inputs:translate_grp:tx>,
+                </chunks/ChunkGroup/Rails.inputs:translate_grp:ty>,
+                </chunks/ChunkGroup/Rails.inputs:translate_grp:tz>,
+                </chunks/ChunkGroup/Rails.inputs:rotate_grp:rx>,
+                </chunks/ChunkGroup/Rails.inputs:rotate_grp:ry>,
+                </chunks/ChunkGroup/Rails.inputs:rotate_grp:rz>,
+                </chunks/ChunkGroup/Rails.inputs:scale_grp:sx>,
+                </chunks/ChunkGroup/Rails.inputs:scale_grp:sy>,
+                </chunks/ChunkGroup/Rails.inputs:scale_grp:sz>,
+            ]
+            uniform token[] ui:gizmo:transform:editmode = ["onPrimSelection"]
+            uniform token ui:gizmo:transform:label = "Rails"
+            uniform token ui:gizmo:transform:type = "transform"
+            uniform float2 ui:nodegraph:node:pos = (3270, 0)
+        }
+
+        def Chunk "RailPair" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            uniform token info:chunkType = "duplicate_prim"
+            uniform string info:moduleHash = "sha256:4d572c8ae0e585c6266ef7bbd989e097d29ed3950f122cd22a8a691403a55b06"
+            token inputs:chunk.connect = </chunks/ChunkGroup/Rails.outputs:chunk>
+            int inputs:copies_grp:copies = 2
+            float3 inputs:copies_grp:copy_translate (
+                customData = {
+                    dictionary chunk = {
+                        string expression = "@Gap.result@"
+                    }
+                }
+            )
+            float3 inputs:copies_grp:copy_translate.connect = </chunks/ChunkGroup/Gap.outputs:result>
+            string inputs:dest_path = "/World/ladder/rails"
+            string inputs:source_prim = "/World/ladder/rail"
+            uniform token outputs:chunk
+            uniform float2 ui:nodegraph:node:pos = (3595, 0)
+        }
+
+        def Chunk "RungBox" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            uniform token info:chunkType = "shape"
+            uniform string info:moduleHash = "sha256:36be9b308faebe2afa3f24770252dd9e8d21c6865336458999c448cf0c671295"
+            token inputs:chunk.connect = </chunks/ChunkGroup/RailPair.outputs:chunk>
+            string inputs:prim_path = "/World/ladder/rung"
+            uniform token outputs:chunk
+            uniform float2 ui:nodegraph:node:pos = (3920, -199)
+        }
+
+        def Chunk "Rung" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            custom uniform string chunk:xformOpId = "Rung_0da41a1a"
+            uniform token info:chunkType = "transform"
+            uniform string info:moduleHash = "sha256:f7565e58be1e987db76be7665a9eda00f4052c005e6a319375a55d7944b553da"
+            token inputs:chunk.connect = </chunks/ChunkGroup/RungBox.outputs:chunk>
+            string inputs:primpath_location = "/World/ladder/rung"
+            float inputs:scale_grp:sx = 0.5
+            float inputs:scale_grp:sy = 0.04
+            float inputs:scale_grp:sz = 0.05
+            float inputs:translate_grp:ty = 0.3
+            uniform token outputs:chunk
+            rel ui:gizmo:transform:anchor = </World/ladder/rung>
+            uniform token ui:gizmo:transform:anchorSource = "primpath_location"
+            uniform token ui:gizmo:transform:driver.connect = [
+                </chunks/ChunkGroup/Rung.inputs:translate_grp:tx>,
+                </chunks/ChunkGroup/Rung.inputs:translate_grp:ty>,
+                </chunks/ChunkGroup/Rung.inputs:translate_grp:tz>,
+                </chunks/ChunkGroup/Rung.inputs:rotate_grp:rx>,
+                </chunks/ChunkGroup/Rung.inputs:rotate_grp:ry>,
+                </chunks/ChunkGroup/Rung.inputs:rotate_grp:rz>,
+                </chunks/ChunkGroup/Rung.inputs:scale_grp:sx>,
+                </chunks/ChunkGroup/Rung.inputs:scale_grp:sy>,
+                </chunks/ChunkGroup/Rung.inputs:scale_grp:sz>,
+            ]
+            uniform token[] ui:gizmo:transform:editmode = ["onPrimSelection"]
+            uniform token ui:gizmo:transform:label = "Rung"
+            uniform token ui:gizmo:transform:type = "transform"
+            uniform float2 ui:nodegraph:node:pos = (4245, -128)
+        }
+
+        def Chunk "Steps" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            uniform token info:chunkType = "duplicate_prim"
+            uniform string info:moduleHash = "sha256:4d572c8ae0e585c6266ef7bbd989e097d29ed3950f122cd22a8a691403a55b06"
+            token inputs:chunk.connect = </chunks/ChunkGroup/Rung.outputs:chunk>
+            int inputs:copies_grp:copies (
+                customData = {
+                    dictionary chunk = {
+                        string expression = "(@Rails.sy@ - 0.05) / @Rung.ty@"
+                    }
+                }
+            )
+            int inputs:copies_grp:copies.connect = [
+                </chunks/ChunkGroup/Rails.inputs:sy>,
+                </chunks/ChunkGroup/Rung.inputs:ty>,
+            ]
+            float3 inputs:copies_grp:copy_translate (
+                customData = {
+                    dictionary chunk = {
+                        string expression = "@Rise.result@"
+                    }
+                }
+            )
+            float3 inputs:copies_grp:copy_translate.connect = </chunks/ChunkGroup/Rise.outputs:result>
+            string inputs:dest_path = "/World/ladder/rungs"
+            string inputs:source_prim = "/World/ladder/rung"
+            uniform token outputs:chunk
+            uniform float2 ui:nodegraph:node:pos = (5220, 0)
+        }
+
+        def Chunk "DropRail" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            uniform token info:chunkType = "prune_prim"
+            uniform string info:moduleHash = "sha256:9ac0a34c6084ebbed26e7b4f8dfca1b9c29a10fcaf578e49e6222a3257d207f7"
+            token inputs:chunk.connect = </chunks/ChunkGroup/Steps.outputs:chunk>
+            string inputs:prim_path = "/World/ladder/rail"
+            uniform token outputs:chunk
+            uniform float2 ui:nodegraph:node:pos = (5545, -236)
+        }
+
+        def Chunk "DropRung" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            uniform token info:chunkType = "prune_prim"
+            uniform string info:moduleHash = "sha256:9ac0a34c6084ebbed26e7b4f8dfca1b9c29a10fcaf578e49e6222a3257d207f7"
+            token inputs:chunk.connect = </chunks/ChunkGroup/DropRail.outputs:chunk>
+            string inputs:prim_path = "/World/ladder/rung"
+            uniform token outputs:chunk
+            uniform float2 ui:nodegraph:node:pos = (5870, -236)
+        }
+
+        def Chunk "Output" (
+            prepend apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            uniform token info:chunkType = "output"
+            token inputs:chunk.connect = </chunks/ChunkGroup/DropRung.outputs:chunk>
+            uniform token ui:nodegraph:node:expansionState = "closed"
+            uniform float2 ui:nodegraph:node:pos = (2620, 0)
+        }
+    }
+}
+

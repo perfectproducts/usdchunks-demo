@@ -1,0 +1,87 @@
+#usda 1.0
+(
+    defaultPrim = "Preview"
+    upAxis = "Y"
+)
+
+def Xform "Preview"
+{
+    def "Looks"
+    {
+        def Material "wood"
+        {
+            token outputs:surface.connect = </Preview/Looks/wood/pbr.outputs:surface>
+
+            def Shader "pbr"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.45, 0.24, 0.1)
+                float inputs:roughness = 0.6
+                token outputs:surface
+            }
+        }
+
+        def Material "ground"
+        {
+            token outputs:surface.connect = </Preview/Looks/ground/pbr.outputs:surface>
+
+            def Shader "pbr"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.35, 0.37, 0.38)
+                token outputs:surface
+            }
+        }
+    }
+
+    def Xform "L0" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        prepend references = @ladder.usda@</World>
+    )
+    {
+        rel material:binding = </Preview/Looks/wood>
+        double3 xformOp:translate = (-2.1, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Xform "L1" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        prepend references = @ladder_short.usda@</World>
+    )
+    {
+        rel material:binding = </Preview/Looks/wood>
+        double3 xformOp:translate = (-0.9, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Xform "L2" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        prepend references = @ladder_tall_wide.usda@</World>
+    )
+    {
+        rel material:binding = </Preview/Looks/wood>
+        double3 xformOp:translate = (0.45, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Xform "L3" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        prepend references = @ladder_dense.usda@</World>
+    )
+    {
+        rel material:binding = </Preview/Looks/wood>
+        double3 xformOp:translate = (1.9, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Mesh "ground" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        int[] faceVertexCounts = [4]
+        int[] faceVertexIndices = [0, 3, 2, 1]
+        rel material:binding = </Preview/Looks/ground>
+        point3f[] points = [(-3.2, 0, -1.5), (3.2, 0, -1.5), (3.2, 0, 1.5), (-3.2, 0, 1.5)]
+    }
+}
+
