@@ -44,10 +44,11 @@ Vector params such as `copy_translate` take only a whole-vector expression (`@No
 
 ## Docs (`docs/`)
 
-Open these in a browser:
+Self-contained HTML: fonts and images are embedded, so they open from disk with no network. Open them in a browser:
 
 - `how_it_works.html` explains how usd_chunks works, using the ladder throughout. It covers chunk prims, the cook and layer stack, the two kinds of wires, groups and hosts.
 - `examples_guide.html` walks through the examples that ship with usd_chunks and how each one uses it.
+- `make_standalone.py` rebuilds them from the artifact sources, adding the document wrapper and inlining the Google Fonts as base64 woff2.
 
 ## Not in this repo
 
